@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Devis interactif - Site portfolio SebPhotos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: #f5f2ef;
+            color: #1a1a1a;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* En-tête */
+        .header {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e8e0d8;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .sub {
+            color: #6b6b6b;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #d4a373;
+            padding-left: 1rem;
+        }
+
+        .infos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .prestataire, .client {
+            font-size: 0.9rem;
+        }
+
+        .prestataire strong, .client strong {
+            color: #d4a373;
+        }
+
+        /* Grille des options */
+        .section {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 1px solid #e8e0d8;
+            transition: box-shadow 0.2s;
+        }
+
+        .section:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+
+        .section-header {
+            background: #faf8f6;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e8e0d8;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .section-header span:first-child {
+            color: #2c2c2c;
+        }
+
+        .section-header span:last-child {
+            color: #d4a373;
+            font-size: 0.9rem;
+        }
+
+        .section-content {
+            padding: 0;
+            display: block;
+        }
+
+        .option-row {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.9rem 1.5rem;
+            border-bottom: 1px solid #f0ece8;
+            transition: background 0.2s;
+        }
+
+        .option-row:hover {
+            background: #fefaf6;
+        }
+
+        .option-check {
+            width: 28px;
+            margin-right: 1rem;
+            margin-top: 2px;
+        }
+
+        .option-check input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #d4a373;
+        }
+
+        .option-details {
+            flex: 1;
+        }
+
+        .option-title {
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 4px;
+        }
+
+        .option-desc {
+            font-size: 0.8rem;
+            color: #7a7a7a;
+        }
+
+        .option-price {
+            font-weight: 600;
+            color: #d4a373;
+            white-space: nowrap;
+            margin-left: 1rem;
+            font-size: 0.95rem;
+        }
+
+        /* Bloc total */
+        .total-card {
+            background: #2c2c2c;
+            color: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: sticky;
+            top: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .total-card h3 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+        }
+
+        .total-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #d4a373;
+            margin-bottom: 1rem;
+        }
+
+        .total-detail {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #d4a373;
+            color: #1a1a1a;
+        }
+
+        .btn-primary:hover {
+            background: #c28a5c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #3a3a3a;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4a4a4a;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #d4a373;
+            color: #d4a373;
+        }
+
+        .btn-outline:hover {
+            background: #d4a37320;
+        }
+
+        /* Exemples de config */
+        .examples {
+            background: #f0ece8;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .examples h4 {
+            margin-bottom: 1rem;
+            color: #2c2c2c;
+        }
+
+        .example-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .example-btn {
+            background: white;
+            border: 1px solid #d4a373;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .example-btn:hover {
+            background: #d4a373;
+            color: white;
+        }
+
+        /* Résumé */
+        .summary {
+            background: #fefaf6;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid #e8e0d8;
+            display: none;
+        }
+
+        .summary h4 {
+            margin-bottom: 1rem;
+            color: #2c2c2c;
+        }
+
+        .summary-content {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            margin-bottom: 1rem;
+            max-height: 300px;
+            overflow: auto;
+        }
+
+        .signature {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e8e0d8;
+            font-size: 0.85rem;
+            color: #6b6b6b;
+        }
+
+        @media (max-width: 700px) {
+            .option-row {
+                flex-wrap: wrap;
+            }
+            .option-price {
+                margin-left: 2rem;
+                margin-top: 0.5rem;
+            }
+            .total-amount {
+                font-size: 2rem;
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📸 SebPhotos — Devis à la carte</h1>
+        <div class="sub">Site portfolio sur-mesure • Cochez ce que vous voulez, le total se calcule automatiquement</div>
+        <div class="infos">
+            <div class="prestataire">
+                <strong>Dev. Luca Guillot</strong><br>
+                Micro-entrepreneur • La Roche sur Yon<br>
+                📧 luca_guillot@outlook.fr
+            </div>
+            <div class="client">
+                <strong>Client : SebPhotos</strong><br>
+                Photographe • Bordeaux & alentours<br>
+                Devis émis le 22/04/2026 — valable 30 jours
+            </div>
+        </div>
+    </div>
+
+    <div id="app">
+        <!-- Les sections seront injectées ici par JS -->
+    </div>
+
+    <!-- Bloc total -->
+    <div class="total-card">
+        <h3>💰 TOTAL TTC (hors maintenance mensuelle)</h3>
+        <div class="total-amount" id="totalAmount">0 €</div>
+        <div class="total-detail" id="totalDetail"></div>
+        <div class="btn-group">
+            <button class="btn btn-primary" id="generateSummaryBtn">📋 Générer le résumé de ma sélection</button>
+            <button class="btn btn-outline" id="resetBtn">🔄 Tout décocher</button>
+        </div>
+    </div>
+
+    <!-- Exemples de configurations -->
+    <div class="examples">
+        <h4>🎯 Exemples de configurations (cliquez pour pré-remplir)</h4>
+        <div class="example-buttons">
+            <button class="example-btn" data-preset="budget">🔹 Budget ~1 100€</button>
+            <button class="example-btn" data-preset="recommended">⭐ Recommandé ~2 200€</button>
+            <button class="example-btn" data-preset="premium">✨ Premium ~3 000€</button>
+            <button class="example-btn" data-preset="minimal">📄 Minimal (forfait de base)</button>
+        </div>
+        <p style="font-size: 0.75rem; margin-top: 0.8rem; color: #6b6b6b;">⚠️ Les exemples écrasent votre sélection actuelle.</p>
+    </div>
+
+    <!-- Zone de résumé -->
+    <div class="summary" id="summaryBox">
+        <h4>📄 Récapitulatif de votre devis</h4>
+        <div class="summary-content" id="summaryContent"></div>
+        <button class="btn btn-secondary" id="copySummaryBtn">📋 Copier le résumé</button>
+        <p style="font-size: 0.75rem; margin-top: 0.8rem;">Copiez ce résumé et envoyez-le à Luca pour validation.</p>
+    </div>
+
+    <div class="signature">
+        <p><strong>Bon pour accord :</strong> _________________________________  Date : ____/____/2026</p>
+        <p><em>TVA non applicable (article 293B du CGI). Paiement : 40% à la commande / 60% à la livraison (ou selon accord).</em></p>
+    </div>
+    <footer>
+        Devis interactif — Site portfolio photographe • Les prix sont TTC • Maintenance mensuelle facturée à part
+    </footer>
+</div>
+
+<script>
+    // ---------- DÉFINITION DES OPTIONS ----------
+    const sections = [
+        { name: "💎 A. FORFAIT DE BASE (OBLIGATOIRE)", options: [
+            { id: "A1", title: "Noyau du site", desc: "Structure HTML/CSS/JS responsive, SEO technique de base (balises meta, sitemap, robots.txt)", price: 300, defaultChecked: true },
+            { id: "A2", title: "Hébergement + domaine (1 an offert)", desc: "Netlify + nom de domaine (ex: sebphotos.com) offert la première année", price: 0, defaultChecked: true }
+        ]},
+        { name: "📄 B. PAGES DU SITE", options: [
+            { id: "B1", title: "Page Accueil", desc: "Design épuré, présentation, photos phares, appel à l'action", price: 100 },
+            { id: "B2", title: "Page Galerie", desc: "Grille dynamique avec miniatures, tri par catégories", price: 150 },
+            { id: "B3", title: "Page Prestations détaillée", desc: "Description complète de toutes ses prestations", price: 80 },
+            { id: "B4", title: "Page Contact", desc: "Formulaire de contact classique avec anti-spam", price: 50 },
+            { id: "B5", title: "Page À propos", desc: "Bio, parcours, philosophie du photographe", price: 40 },
+            { id: "B6", title: "Blog", desc: "Liste des articles + page article individuel, catégories", price: 150 },
+            { id: "B7", title: "Page Tarifs (sur demande)", desc: "Page protégée par mot de passe ou lien privé", price: 50 }
+        ]},
+        { name: "🖼️ C. GALERIE & PHOTOS", options: [
+            { id: "C1", title: "Lightbox", desc: "Clic sur une photo → zoom, navigation gauche/droite", price: 80 },
+            { id: "C2", title: "Catégories dynamiques", desc: "Ajout/suppression de catégories depuis l'admin", price: 100 },
+            { id: "C3", title: "Upload photos via CMS", desc: "Ajout/suppression de photos sans code", price: 100 },
+            { id: "C4", title: "Ordre des photos modifiable", desc: "Glisser-déposer pour changer l'ordre", price: 60 },
+            { id: "C5", title: "Protection des photos", desc: "Watermark automatique + clic droit désactivé", price: 80 },
+            { id: "C6", title: "Infinite scroll ou pagination", desc: "Chargement au scroll ou bouton 'Voir plus'", price: 50 }
+        ]},
+        { name: "🎨 D. DESIGN & EXPÉRIENCE", options: [
+            { id: "D1", title: "Mode clair / sombre", desc: "Basculable par l'utilisateur, persistant", price: 100 },
+            { id: "D2", title: "Animations au scroll", desc: "Photos/textes qui apparaissent en fondu", price: 80 },
+            { id: "D3", title: "Carrousel en fond d'accueil", desc: "Plusieurs photos qui défilent", price: 60 },
+            { id: "D4", title: "Intégration du logo", desc: "Logo PNG intégré dans header/footer", price: 20 }
+        ]},
+        { name: "👥 E. ESPACE CLIENT & COMPTES", options: [
+            { id: "E1", title: "Espace client basique", desc: "Connexion par mot de passe (général ou par galerie)", price: 300 },
+            { id: "E2", title: "Galeries client privées", desc: "Chaque client a sa galerie protégée par mot de passe", price: 250 },
+            { id: "E3", title: "Téléchargement des photos", desc: "Bouton pour télécharger toutes ses photos en ZIP", price: 150 },
+            { id: "E4", title: "Notifications automatiques", desc: "Email au photographe quand un client consulte/télécharge", price: 80 }
+        ]},
+        { name: "💳 F. PAIEMENT & RÉSERVATION", options: [
+            { id: "F1", title: "Réservation de créneaux", desc: "Intégration Cal.com (gratuit) – synchro agenda", price: 120 },
+            { id: "F2", title: "Paiement en ligne", desc: "Intégration Stripe – paiement par carte bancaire", price: 150 }
+        ]},
+        { name: "🔗 G. INTÉGRATIONS EXTERNES", options: [
+            { id: "G1", title: "Flux Instagram automatique", desc: "Affichage des dernières photos Instagram", price: 80 },
+            { id: "G2", title: "Widget avis Google", desc: "Intégration des avis Google Maps", price: 80 },
+            { id: "G3", title: "Liens vers les réseaux sociaux", desc: "Boutons Instagram, etc. dans footer", price: 20 }
+        ]},
+        { name: "📊 H. STATISTIQUES & ADMIN", options: [
+            { id: "H1", title: "Google Analytics", desc: "Installation et configuration du suivi de trafic", price: 50 },
+            { id: "H2", title: "Dashboard admin simple", desc: "Vues par photo, connexions espace client, réservations", price: 120 },
+            { id: "H3", title: "Search Console", desc: "Configuration et soumission du site à Google", price: 30 }
+        ]},
+        { name: "✍️ I. GESTION DE CONTENU (CMS)", options: [
+            { id: "I1", title: "Decap CMS (interface admin)", desc: "Modifier textes, photos, catégories, ordre des photos", price: 150 },
+            { id: "I2", title: "Gestion du blog via CMS", desc: "Publier/modifier des articles sans code", price: 80 },
+            { id: "I3", title: "Gestion des témoignages", desc: "Ajouter/supprimer/modifier des avis clients", price: 60 }
+        ]},
+        { name: "📝 J. BLOG & COMMENTAIRES", options: [
+            { id: "J1", title: "Commentaires sur le blog", desc: "Les visiteurs peuvent commenter (modération incluse)", price: 100 },
+            { id: "J2", title: "Disqus (alternative externe)", desc: "Intégration gratuite de Disqus", price: 40 }
+        ]},
+        { name: "🔧 K. FORMATION & SUPPORT", options: [
+            { id: "K1", title: "Formation 1h", desc: "Session visio pour apprendre à gérer le site", price: 100 },
+            { id: "K2", title: "Formation complète 2h", desc: "Formation approfondie + tutoriels écrits", price: 180 },
+            { id: "K3", title: "Support 3 mois", desc: "Assistance email (pas de modifications lourdes)", price: 100 }
+        ]},
+        { name: "🛠️ L. MAINTENANCE MENSUELLE (hors forfait, mensuel)", options: [
+            { id: "L1", title: "Maintenance de base", desc: "Mises à jour sécurité, sauvegardes, monitoring (30€/mois)", price: 30, isMonthly: true },
+            { id: "L2", title: "Maintenance complète", desc: "Base + 2h/mois modifications + support prioritaire (70€/mois)", price: 70, isMonthly: true },
+            { id: "L3", title: "Pack modifications", desc: "5h de modifications valables 3 mois (40€/mois)", price: 40, isMonthly: true },
+            { id: "L4", title: "Sauvegarde externe", desc: "Sauvegarde quotidienne site + photos (10€/mois)", price: 10, isMonthly: true }
+        ]}
+    ];
+
+    // Stockage des états
+    let selectedState = {};
+
+    // Fonction pour calculer le total (hors mensuel)
+    function calculateTotal() {
+        let total = 0;
+        for (const section of sections) {
+            for (const opt of section.options) {
+                if (opt.isMonthly) continue; // on exclut la maintenance mensuelle du total unique
+                if (selectedState[opt.id]) {
+                    total += opt.price;
+                }
+            }
+        }
+        return total;
+    }
+
+    // Calcul du total mensuel (maintenance)
+    function calculateMonthlyTotal() {
+        let monthly = 0;
+        for (const section of sections) {
+            for (const opt of section.options) {
+                if (opt.isMonthly && selectedState[opt.id]) {
+                    monthly += opt.price;
+                }
+            }
+        }
+        return monthly;
+    }
+
+    // Mise à jour de l'affichage total
+    function updateTotalDisplay() {
+        const total = calculateTotal();
+        const monthly = calculateMonthlyTotal();
+        document.getElementById('totalAmount').innerHTML = total.toLocaleString('fr-FR') + ' €';
+        if (monthly > 0) {
+            document.getElementById('totalDetail').innerHTML = `+ ${monthly} €/mois de maintenance (hors forfait)`;
+        } else {
+            document.getElementById('totalDetail').innerHTML = `Aucune option de maintenance mensuelle sélectionnée`;
+        }
+    }
+
+    // Génération du résumé
+    function generateSummary() {
+        let lines = [];
+        let total = calculateTotal();
+        let monthly = calculateMonthlyTotal();
+        lines.push("📸 SEBPHOTOS – RÉCAPITULATIF DEVIS");
+        lines.push("----------------------------------------");
+        for (const section of sections) {
+            let selectedInSection = section.options.filter(opt => selectedState[opt.id] && !opt.isMonthly);
+            if (selectedInSection.length > 0) {
+                lines.push(`\n${section.name} :`);
+                for (const opt of selectedInSection) {
+                    lines.push(`  ✓ ${opt.title} – ${opt.price} €`);
+                }
+            }
+        }
+        // Options mensuelles
+        let selectedMonthly = [];
+        for (const section of sections) {
+            for (const opt of section.options) {
+                if (opt.isMonthly && selectedState[opt.id]) {
+                    selectedMonthly.push(`  ✓ ${opt.title} – ${opt.price} €/mois`);
+                }
+            }
+        }
+        if (selectedMonthly.length > 0) {
+            lines.push(`\n🛠️ MAINTENANCE MENSUELLE :`);
+            lines.push(...selectedMonthly);
+        }
+        lines.push(`\n----------------------------------------`);
+        lines.push(`💰 TOTAL UNIQUE (hors maintenance mensuelle) : ${total} € TTC`);
+        if (monthly > 0) lines.push(`📆 TOTAL MAINTENANCE MENSUELLE : ${monthly} €/mois`);
+        lines.push(`\nConditions : 40% à la commande / 60% à la livraison`);
+        lines.push(`TVA non applicable (art. 293B du CGI)`);
+        lines.push(`\nBon pour accord : _________________  Date : ____/____/2026`);
+        return lines.join('\n');
+    }
+
+    // Appliquer un preset
+    function applyPreset(presetId) {
+        // Tout décocher d'abord
+        for (const section of sections) {
+            for (const opt of section.options) {
+                selectedState[opt.id] = false;
+            }
+        }
+        // Forfait de base toujours coché
+        selectedState["A1"] = true;
+        selectedState["A2"] = true;
+
+        if (presetId === "minimal") {
+            // Seulement forfait de base
+        } else if (presetId === "budget") {
+            // ~1100€
+            const budgetIds = ["B1","B2","B4","B5","C1","C2","C3","H1","H3","I1"];
+            budgetIds.forEach(id => { selectedState[id] = true; });
+        } else if (presetId === "recommended") {
+            // ~2200€
+            const recIds = ["B1","B2","B3","B4","B5","B6","C1","C2","C3","C4","D1","F1","F2","G1","G2","H1","H3","I1","I2","K1"];
+            recIds.forEach(id => { selectedState[id] = true; });
+        } else if (presetId === "premium") {
+            // Tout sauf commentaires et quelques uns pour rester ~3000€ (on prend presque tout)
+            for (const section of sections) {
+                for (const opt of section.options) {
+                    if (!opt.isMonthly && opt.id !== "J1" && opt.id !== "J2" && opt.id !== "E4") {
+                        selectedState[opt.id] = true;
+                    }
+                }
+            }
+        }
+        renderSections();
+        updateTotalDisplay();
+    }
+
+    // Rendu des sections dans le DOM
+    function renderSections() {
+        const app = document.getElementById('app');
+        app.innerHTML = '';
+        for (const section of sections) {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'section';
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'section-header';
+            headerDiv.innerHTML = `<span>${section.name}</span><span>▼</span>`;
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'section-content';
+            for (const opt of section.options) {
+                const row = document.createElement('div');
+                row.className = 'option-row';
+                const isChecked = selectedState[opt.id] || false;
+                row.innerHTML = `
+                    <div class="option-check">
+                        <input type="checkbox" id="${opt.id}" ${isChecked ? 'checked' : ''}>
+                    </div>
+                    <div class="option-details">
+                        <div class="option-title">${opt.title}</div>
+                        <div class="option-desc">${opt.desc}</div>
+                    </div>
+                    <div class="option-price">${opt.price} ${opt.isMonthly ? '€/mois' : '€'}</div>
+                `;
+                const chk = row.querySelector('input');
+                chk.addEventListener('change', (e) => {
+                    selectedState[opt.id] = e.target.checked;
+                    updateTotalDisplay();
+                });
+                contentDiv.appendChild(row);
+            }
+            headerDiv.addEventListener('click', () => {
+                const isVisible = contentDiv.style.display !== 'none';
+                contentDiv.style.display = isVisible ? 'none' : 'block';
+                headerDiv.querySelector('span:last-child').innerHTML = isVisible ? '▶' : '▼';
+            });
+            sectionDiv.appendChild(headerDiv);
+            sectionDiv.appendChild(contentDiv);
+            app.appendChild(sectionDiv);
+        }
+    }
+
+    // Initialisation
+    function init() {
+        // Initialisation : forfait de base coché
+        for (const section of sections) {
+            for (const opt of section.options) {
+                if (opt.defaultChecked) {
+                    selectedState[opt.id] = true;
+                } else {
+                    selectedState[opt.id] = false;
+                }
+            }
+        }
+        renderSections();
+        updateTotalDisplay();
+
+        // Événements des boutons
+        document.getElementById('generateSummaryBtn').addEventListener('click', () => {
+            const summaryText = generateSummary();
+            document.getElementById('summaryContent').innerText = summaryText;
+            document.getElementById('summaryBox').style.display = 'block';
+        });
+        document.getElementById('copySummaryBtn').addEventListener('click', () => {
+            const text = document.getElementById('summaryContent').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Résumé copié dans le presse-papier !');
+            });
+        });
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            for (const section of sections) {
+                for (const opt of section.options) {
+                    selectedState[opt.id] = false;
+                }
+            }
+            selectedState["A1"] = true;
+            selectedState["A2"] = true;
+            renderSections();
+            updateTotalDisplay();
+            document.getElementById('summaryBox').style.display = 'none';
+        });
+        document.querySelectorAll('.example-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const preset = e.target.getAttribute('data-preset');
+                applyPreset(preset);
+                document.getElementById('summaryBox').style.display = 'none';
+            });
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>
