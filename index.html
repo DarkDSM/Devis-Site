@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Devis interactif - Site portfolio SebPhotos</title>
+    <title>Devis interactif - Site portfolio SebPhotos + CRM</title>
     <style>
         * {
             margin: 0;
@@ -24,7 +24,6 @@
             margin: 0 auto;
         }
 
-        /* En-tête */
         .header {
             background: white;
             border-radius: 24px;
@@ -66,7 +65,6 @@
             color: #d4a373;
         }
 
-        /* Grille des options */
         .section {
             background: white;
             border-radius: 20px;
@@ -154,7 +152,6 @@
             font-size: 0.95rem;
         }
 
-        /* Bloc total */
         .total-card {
             background: #2c2c2c;
             color: white;
@@ -232,7 +229,6 @@
             background: #d4a37320;
         }
 
-        /* Exemples de config */
         .examples {
             background: #f0ece8;
             border-radius: 20px;
@@ -266,7 +262,6 @@
             color: white;
         }
 
-        /* Résumé */
         .summary {
             background: #fefaf6;
             border-radius: 20px;
@@ -289,7 +284,7 @@
             font-size: 0.85rem;
             white-space: pre-wrap;
             margin-bottom: 1rem;
-            max-height: 300px;
+            max-height: 400px;
             overflow: auto;
         }
 
@@ -326,7 +321,7 @@
 <div class="container">
     <div class="header">
         <h1>📸 SebPhotos — Devis à la carte</h1>
-        <div class="sub">Site portfolio sur-mesure • Cochez ce que vous voulez, le total se calcule automatiquement</div>
+        <div class="sub">Site portfolio sur-mesure + outils de gestion (CRM, facturation, galerie client)</div>
         <div class="infos">
             <div class="prestataire">
                 <strong>Dev. Luca Guillot</strong><br>
@@ -341,11 +336,8 @@
         </div>
     </div>
 
-    <div id="app">
-        <!-- Les sections seront injectées ici par JS -->
-    </div>
+    <div id="app"></div>
 
-    <!-- Bloc total -->
     <div class="total-card">
         <h3>💰 TOTAL TTC (hors maintenance mensuelle)</h3>
         <div class="total-amount" id="totalAmount">0 €</div>
@@ -356,19 +348,18 @@
         </div>
     </div>
 
-    <!-- Exemples de configurations -->
     <div class="examples">
         <h4>🎯 Exemples de configurations (cliquez pour pré-remplir)</h4>
         <div class="example-buttons">
             <button class="example-btn" data-preset="budget">🔹 Budget ~1 100€</button>
             <button class="example-btn" data-preset="recommended">⭐ Recommandé ~2 200€</button>
             <button class="example-btn" data-preset="premium">✨ Premium ~3 000€</button>
+            <button class="example-btn" data-preset="crm">📊 Avec CRM (Fotostudio)</button>
             <button class="example-btn" data-preset="minimal">📄 Minimal (forfait de base)</button>
         </div>
         <p style="font-size: 0.75rem; margin-top: 0.8rem; color: #6b6b6b;">⚠️ Les exemples écrasent votre sélection actuelle.</p>
     </div>
 
-    <!-- Zone de résumé -->
     <div class="summary" id="summaryBox">
         <h4>📄 Récapitulatif de votre devis</h4>
         <div class="summary-content" id="summaryContent"></div>
@@ -379,27 +370,27 @@
     <div class="signature">
         <p><strong>Bon pour accord :</strong> _________________________________  Date : ____/____/2026</p>
         <p><em>TVA non applicable (article 293B du CGI). Paiement : 40% à la commande / 60% à la livraison (ou selon accord).</em></p>
+        <p><em>📌 Les outils externes (Indy, Pixieset, Fotostudio, Cal.com) nécessitent un abonnement mensuel séparé (hors devis).</em></p>
     </div>
     <footer>
-        Devis interactif — Site portfolio photographe • Les prix sont TTC • Maintenance mensuelle facturée à part
+        Devis interactif — Site portfolio photographe + CRM • Les prix sont TTC • Maintenance mensuelle facturée à part
     </footer>
 </div>
 
 <script>
-    // ---------- DÉFINITION DES OPTIONS ----------
     const sections = [
         { name: "💎 A. FORFAIT DE BASE (OBLIGATOIRE)", options: [
-            { id: "A1", title: "Noyau du site", desc: "Structure HTML/CSS/JS responsive, SEO technique de base (balises meta, sitemap, robots.txt)", price: 300, defaultChecked: true },
-            { id: "A2", title: "Hébergement + domaine (1 an offert)", desc: "Netlify + nom de domaine (ex: sebphotos.com) offert la première année", price: 0, defaultChecked: true }
+            { id: "A1", title: "Noyau du site", desc: "Structure HTML/CSS/JS responsive, SEO technique de base", price: 300, defaultChecked: true },
+            { id: "A2", title: "Hébergement + domaine (1 an offert)", desc: "Netlify + nom de domaine offert première année", price: 0, defaultChecked: true }
         ]},
         { name: "📄 B. PAGES DU SITE", options: [
-            { id: "B1", title: "Page Accueil", desc: "Design épuré, présentation, photos phares, appel à l'action", price: 100 },
+            { id: "B1", title: "Page Accueil", desc: "Design épuré, présentation, photos phares", price: 100 },
             { id: "B2", title: "Page Galerie", desc: "Grille dynamique avec miniatures, tri par catégories", price: 150 },
-            { id: "B3", title: "Page Prestations détaillée", desc: "Description complète de toutes ses prestations", price: 80 },
-            { id: "B4", title: "Page Contact", desc: "Formulaire de contact classique avec anti-spam", price: 50 },
-            { id: "B5", title: "Page À propos", desc: "Bio, parcours, philosophie du photographe", price: 40 },
-            { id: "B6", title: "Blog", desc: "Liste des articles + page article individuel, catégories", price: 150 },
-            { id: "B7", title: "Page Tarifs (sur demande)", desc: "Page protégée par mot de passe ou lien privé", price: 50 }
+            { id: "B3", title: "Page Prestations détaillée", desc: "Description complète des prestations", price: 80 },
+            { id: "B4", title: "Page Contact", desc: "Formulaire de contact avec anti-spam", price: 50 },
+            { id: "B5", title: "Page À propos", desc: "Bio, parcours, philosophie", price: 40 },
+            { id: "B6", title: "Blog", desc: "Liste des articles + page article individuel", price: 150 },
+            { id: "B7", title: "Page Tarifs (sur demande)", desc: "Page protégée par mot de passe", price: 50 }
         ]},
         { name: "🖼️ C. GALERIE & PHOTOS", options: [
             { id: "C1", title: "Lightbox", desc: "Clic sur une photo → zoom, navigation gauche/droite", price: 80 },
@@ -449,45 +440,45 @@
             { id: "K2", title: "Formation complète 2h", desc: "Formation approfondie + tutoriels écrits", price: 180 },
             { id: "K3", title: "Support 3 mois", desc: "Assistance email (pas de modifications lourdes)", price: 100 }
         ]},
-        { name: "🛠️ L. MAINTENANCE MENSUELLE (hors forfait, mensuel)", options: [
-            { id: "L1", title: "Maintenance de base", desc: "Mises à jour sécurité, sauvegardes, monitoring (30€/mois)", price: 30, isMonthly: true },
-            { id: "L2", title: "Maintenance complète", desc: "Base + 2h/mois modifications + support prioritaire (70€/mois)", price: 70, isMonthly: true },
-            { id: "L3", title: "Pack modifications", desc: "5h de modifications valables 3 mois (40€/mois)", price: 40, isMonthly: true },
-            { id: "L4", title: "Sauvegarde externe", desc: "Sauvegarde quotidienne site + photos (10€/mois)", price: 10, isMonthly: true }
+        { name: "📊 M. CRM & OUTILS DE GESTION (externe - configuration)", options: [
+            { id: "M1", title: "Configuration Indy ou Pennylane", desc: "Création compte, paramétrage TVA, devis/factures modèles. Outil pour factures/devis conforme France (abonnement ~9-15€/mois à prévoir).", price: 70 },
+            { id: "M2", title: "Configuration Cal.com (agenda)", desc: "Synchronisation agenda Google/iCal, paramétrage créneaux, intégration widget réservation sur le site (gratuit).", price: 40 },
+            { id: "M3", title: "Configuration Pixieset ou Fotostudio (galerie client)", desc: "Espace client pro pour livrer les photos, galeries privées, téléchargement, watermark. Abonnement ~15-30€/mois à prévoir.", price: 80 },
+            { id: "M4", title: "Configuration Fotostudio (tout-en-un)", desc: "Solution européenne complète : devis, factures, contrats, galeries client, agenda, relances, paiement Stripe. Abonnement ~29€/mois.", price: 150 },
+            { id: "M5", title: "Formation CRM 1h", desc: "Prise en main des outils choisis (Indy, Pixieset, Fotostudio, etc.)", price: 60 },
+            { id: "M6", title: "Intégration SSO (connexion unique)", desc: "Lien direct depuis le site vers l'espace client externe (redirection vers Pixieset/Fotostudio)", price: 80 }
+        ]},
+        { name: "🛠️ N. MAINTENANCE MENSUELLE (hors forfait, mensuel)", options: [
+            { id: "N1", title: "Maintenance de base", desc: "Mises à jour sécurité, sauvegardes, monitoring (30€/mois)", price: 30, isMonthly: true },
+            { id: "N2", title: "Maintenance complète", desc: "Base + 2h/mois modifications + support prioritaire (70€/mois)", price: 70, isMonthly: true },
+            { id: "N3", title: "Pack modifications", desc: "5h de modifications valables 3 mois (40€/mois)", price: 40, isMonthly: true },
+            { id: "N4", title: "Sauvegarde externe", desc: "Sauvegarde quotidienne site + photos (10€/mois)", price: 10, isMonthly: true }
         ]}
     ];
 
-    // Stockage des états
     let selectedState = {};
 
-    // Fonction pour calculer le total (hors mensuel)
     function calculateTotal() {
         let total = 0;
         for (const section of sections) {
             for (const opt of section.options) {
-                if (opt.isMonthly) continue; // on exclut la maintenance mensuelle du total unique
-                if (selectedState[opt.id]) {
-                    total += opt.price;
-                }
+                if (opt.isMonthly) continue;
+                if (selectedState[opt.id]) total += opt.price;
             }
         }
         return total;
     }
 
-    // Calcul du total mensuel (maintenance)
     function calculateMonthlyTotal() {
         let monthly = 0;
         for (const section of sections) {
             for (const opt of section.options) {
-                if (opt.isMonthly && selectedState[opt.id]) {
-                    monthly += opt.price;
-                }
+                if (opt.isMonthly && selectedState[opt.id]) monthly += opt.price;
             }
         }
         return monthly;
     }
 
-    // Mise à jour de l'affichage total
     function updateTotalDisplay() {
         const total = calculateTotal();
         const monthly = calculateMonthlyTotal();
@@ -499,12 +490,11 @@
         }
     }
 
-    // Génération du résumé
     function generateSummary() {
         let lines = [];
         let total = calculateTotal();
         let monthly = calculateMonthlyTotal();
-        lines.push("📸 SEBPHOTOS – RÉCAPITULATIF DEVIS");
+        lines.push("📸 SEBPHOTOS – RÉCAPITULATIF DEVIS (avec CRM)");
         lines.push("----------------------------------------");
         for (const section of sections) {
             let selectedInSection = section.options.filter(opt => selectedState[opt.id] && !opt.isMonthly);
@@ -515,7 +505,6 @@
                 }
             }
         }
-        // Options mensuelles
         let selectedMonthly = [];
         for (const section of sections) {
             for (const opt of section.options) {
@@ -531,36 +520,32 @@
         lines.push(`\n----------------------------------------`);
         lines.push(`💰 TOTAL UNIQUE (hors maintenance mensuelle) : ${total} € TTC`);
         if (monthly > 0) lines.push(`📆 TOTAL MAINTENANCE MENSUELLE : ${monthly} €/mois`);
+        lines.push(`\n📌 À prévoir en plus (abonnements externes) :`);
+        lines.push(`   • Indy/Pennylane : ~9-15€/mois (si M1 choisi)`);
+        lines.push(`   • Pixieset/Fotostudio : ~15-30€/mois (si M3 ou M4 choisi)`);
+        lines.push(`   • Fotostudio tout-en-un : ~29€/mois (si M4 choisi)`);
         lines.push(`\nConditions : 40% à la commande / 60% à la livraison`);
         lines.push(`TVA non applicable (art. 293B du CGI)`);
         lines.push(`\nBon pour accord : _________________  Date : ____/____/2026`);
         return lines.join('\n');
     }
 
-    // Appliquer un preset
     function applyPreset(presetId) {
-        // Tout décocher d'abord
         for (const section of sections) {
             for (const opt of section.options) {
                 selectedState[opt.id] = false;
             }
         }
-        // Forfait de base toujours coché
         selectedState["A1"] = true;
         selectedState["A2"] = true;
 
         if (presetId === "minimal") {
-            // Seulement forfait de base
+            // rien de plus
         } else if (presetId === "budget") {
-            // ~1100€
-            const budgetIds = ["B1","B2","B4","B5","C1","C2","C3","H1","H3","I1"];
-            budgetIds.forEach(id => { selectedState[id] = true; });
+            ["B1","B2","B4","B5","C1","C2","C3","H1","H3","I1"].forEach(id => selectedState[id] = true);
         } else if (presetId === "recommended") {
-            // ~2200€
-            const recIds = ["B1","B2","B3","B4","B5","B6","C1","C2","C3","C4","D1","F1","F2","G1","G2","H1","H3","I1","I2","K1"];
-            recIds.forEach(id => { selectedState[id] = true; });
+            ["B1","B2","B3","B4","B5","B6","C1","C2","C3","C4","D1","F1","F2","G1","G2","H1","H3","I1","I2","K1"].forEach(id => selectedState[id] = true);
         } else if (presetId === "premium") {
-            // Tout sauf commentaires et quelques uns pour rester ~3000€ (on prend presque tout)
             for (const section of sections) {
                 for (const opt of section.options) {
                     if (!opt.isMonthly && opt.id !== "J1" && opt.id !== "J2" && opt.id !== "E4") {
@@ -568,12 +553,13 @@
                     }
                 }
             }
+        } else if (presetId === "crm") {
+            ["B1","B2","B3","B4","B5","C1","C2","C3","D1","F1","F2","H1","H3","I1","M1","M3","M5"].forEach(id => selectedState[id] = true);
         }
         renderSections();
         updateTotalDisplay();
     }
 
-    // Rendu des sections dans le DOM
     function renderSections() {
         const app = document.getElementById('app');
         app.innerHTML = '';
@@ -590,13 +576,8 @@
                 row.className = 'option-row';
                 const isChecked = selectedState[opt.id] || false;
                 row.innerHTML = `
-                    <div class="option-check">
-                        <input type="checkbox" id="${opt.id}" ${isChecked ? 'checked' : ''}>
-                    </div>
-                    <div class="option-details">
-                        <div class="option-title">${opt.title}</div>
-                        <div class="option-desc">${opt.desc}</div>
-                    </div>
+                    <div class="option-check"><input type="checkbox" id="${opt.id}" ${isChecked ? 'checked' : ''}></div>
+                    <div class="option-details"><div class="option-title">${opt.title}</div><div class="option-desc">${opt.desc}</div></div>
                     <div class="option-price">${opt.price} ${opt.isMonthly ? '€/mois' : '€'}</div>
                 `;
                 const chk = row.querySelector('input');
@@ -617,32 +598,22 @@
         }
     }
 
-    // Initialisation
     function init() {
-        // Initialisation : forfait de base coché
         for (const section of sections) {
             for (const opt of section.options) {
-                if (opt.defaultChecked) {
-                    selectedState[opt.id] = true;
-                } else {
-                    selectedState[opt.id] = false;
-                }
+                selectedState[opt.id] = opt.defaultChecked || false;
             }
         }
         renderSections();
         updateTotalDisplay();
 
-        // Événements des boutons
         document.getElementById('generateSummaryBtn').addEventListener('click', () => {
-            const summaryText = generateSummary();
-            document.getElementById('summaryContent').innerText = summaryText;
+            document.getElementById('summaryContent').innerText = generateSummary();
             document.getElementById('summaryBox').style.display = 'block';
         });
         document.getElementById('copySummaryBtn').addEventListener('click', () => {
-            const text = document.getElementById('summaryContent').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('✅ Résumé copié dans le presse-papier !');
-            });
+            navigator.clipboard.writeText(document.getElementById('summaryContent').innerText);
+            alert('✅ Résumé copié !');
         });
         document.getElementById('resetBtn').addEventListener('click', () => {
             for (const section of sections) {
@@ -658,13 +629,11 @@
         });
         document.querySelectorAll('.example-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const preset = e.target.getAttribute('data-preset');
-                applyPreset(preset);
+                applyPreset(e.target.getAttribute('data-preset'));
                 document.getElementById('summaryBox').style.display = 'none';
             });
         });
     }
-
     init();
 </script>
 </body>
